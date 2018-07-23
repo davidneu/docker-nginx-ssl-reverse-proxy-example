@@ -1,4 +1,4 @@
-# Setting Up an Nginx SSL Reverse Proxy Docker
+# Setting Up an Nginx SSL Reverse Proxy in a Docker Container
 
 - This can be used to serve SSL traffic to Clojure Ring applications
   developed as shown in [Setting Up a Docker Development and Production Environment for Clojure and Postgresql Applications](https://github.com/davidneu/docker-clojure-postgresql-example).

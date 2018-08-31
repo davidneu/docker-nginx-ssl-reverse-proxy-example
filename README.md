@@ -11,14 +11,31 @@
 - Change all references to the new project name by running
   $ ./set-project-name.sh newprojectname
 
-- $ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+- Change the domain name from example.com in the server_name entry in nginx.conf.
 
-- $ docker build --force-rm -t myapp_reverse_proxy_image:latest .
+- Generate key and certificate with password
+  $ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
 
-- $ docker run -i --name myapp_reverse_proxy_container -p 443:443 --network myapp_default myapp_reverse_proxy_image:latest
+- Generate key and certificate without password
+  $ openssl req -x509 -new -nodes      -keyout key.pem -out cert.pem -days 365
 
-- Notice that the myapp_reverse_proxy_container connects to the
+- $ docker build --force-rm -t myapp_nginx_ssl_reverse_proxy_image:latest .
+
+- Start the docker container that runs myapp.
+
+- Run
+  $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+
+- Run in the background
+  $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+
+- Notice that the myapp_nginx_ssl_reverse_proxy_container connects to the
   myapp_default network. 
 
 - Point browser to https://localhost.
+
+- Before rebuilding the image:
+  - docker container stop myapp_nginx_ssl_reverse_proxy_container
+  - docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes
+  - docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
 

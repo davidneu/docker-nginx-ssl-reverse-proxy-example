@@ -20,30 +20,29 @@
   $ openssl req -x509 -new -nodes      -keyout key.pem -out cert.pem -days 365
 
 - $ docker build --force-rm -t myapp_nginx_ssl_reverse_proxy_image:latest .
+  Or use $ ./myapp_nginx_ssl_reverse_proxy build
 
-- Start the docker container that runs myapp.
+- Start the docker container that runs myapp_nginx_ssl_reverse_proxy.
+  Or use $ ./myapp_nginx_ssl_reverse_proxy run
 
-- Run  (Use proxy_pass https://clj-dev:4443; in nginx.conf)
-  $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+  1. Use the host network
 
-- Run in the background (Use proxy_pass https://clj-dev:4443; in nginx.conf)
-  $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+  - Run (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
+    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
 
-- Run (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
-  $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
+  - Run in the background (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
+    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
 
-- Run in the background (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
-  $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
+  2. Use the myapp_default network
 
-- Notice that the myapp_nginx_ssl_reverse_proxy_container connects to the
-  myapp_default network.
+  - Run  (Use proxy_pass https://clj-dev:4443; in nginx.conf)
+    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+
+  - Run in the background (Use proxy_pass https://clj-dev:4443; in nginx.conf)
+    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
 
 - Point browser to https://localhost.
 
-- Before rebuilding the image:
-  - docker container stop myapp_nginx_ssl_reverse_proxy_container
-  - docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes
-  - docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
-  that is,
-  - docker container stop myapp_nginx_ssl_reverse_proxy_container; docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes;  docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
+- Clean up before rebuilding the image
+  $ ./myapp_nginx_ssl_reverse_proxy clean
 

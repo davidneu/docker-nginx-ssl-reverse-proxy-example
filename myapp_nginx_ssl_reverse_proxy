@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -o errexit 
+set -o nounset
+
+usage="Usage: myapp_nginx_ssl_reverse_proxy {build | up | down | clean}"
+
+if [ $# -eq 1 ]; then
+
+  cmd=$1
+
+  case $cmd in
+
+    # myapp_nginx_ssl_reverse_proxy build
+    build )
+      echo 'build ...'
+      docker build --force-rm -t myapp_nginx_ssl_reverse_proxy_image:latest .
+      ;;
+
+    # myapp_nginx_ssl_reverse_proxy up
+    up )
+      echo 'up ...'
+      docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image	
+      ;;
+
+    # myapp_nginx_ssl_reverse_proxy down
+    down )
+      echo 'down ...'
+      docker container stop myapp_nginx_ssl_reverse_proxy_container
+      ;;
+
+    # myapp_nginx_ssl_reverse_proxy clean
+    clean )
+      echo 'clean ...'	
+      docker container stop myapp_nginx_ssl_reverse_proxy_container; docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes;  docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
+      ;;
+
+    * )
+      echo $usage
+      ;;
+  esac
+
+else
+    echo $usage
+fi
+

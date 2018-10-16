@@ -11,7 +11,9 @@
 - Change all references to the new project name by running
   $ ./set-project-name.sh newprojectname
 
-- Change the domain name from example.com in the server_name entry in nginx.conf.
+- Correct the server_name entry in nginx.conf.
+
+- Correct the proxy_pass entry in nginx.conf.
 
 - Generate key and certificate with password
   $ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
@@ -28,18 +30,18 @@
   1. Use the host network
 
   - Run (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
-    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
+    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image:latest
 
   - Run in the background (Use proxy_pass https://localhost:4443; or proxy_pass https://myapp-clj-dev.example.com; in nginx.conf)
-    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image
+    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image:latest
 
   2. Use the myapp_default network
 
   - Run  (Use proxy_pass https://clj-dev:4443; in nginx.conf)
-    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+    $ docker run -i --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image:latest
 
   - Run in the background (Use proxy_pass https://clj-dev:4443; in nginx.conf)
-    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image
+    $ docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network myapp_default myapp_nginx_ssl_reverse_proxy_image:latest
 
 - Point browser to https://localhost.
 

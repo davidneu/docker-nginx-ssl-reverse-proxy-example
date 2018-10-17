@@ -32,7 +32,10 @@ if [ $# -eq 1 ]; then
     # myapp_nginx_ssl_reverse_proxy clean
     clean )
       echo 'clean ...'	
-      docker container stop myapp_nginx_ssl_reverse_proxy_container; docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes; docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
+      set +e
+      docker container stop myapp_nginx_ssl_reverse_proxy_container
+      docker container rm myapp_nginx_ssl_reverse_proxy_container --volumes
+      docker image rm myapp_nginx_ssl_reverse_proxy_image:latest
       ;;
 
     * )

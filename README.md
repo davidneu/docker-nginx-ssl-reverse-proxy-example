@@ -21,6 +21,8 @@
 - Generate key and certificate without password
   $ openssl req -x509 -new -nodes      -keyout key.pem -out cert.pem -days 365
 
+- $ chmod 600 *.pem 
+
 - $ docker build --force-rm -t myapp_nginx_ssl_reverse_proxy_image:latest .
   Or use $ ./myapp_nginx_ssl_reverse_proxy build
 

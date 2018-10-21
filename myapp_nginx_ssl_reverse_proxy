@@ -20,7 +20,7 @@ if [ $# -eq 1 ]; then
     # myapp_nginx_ssl_reverse_proxy up
     up )
       echo 'up ...'
-      docker run -d --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image:latest
+      docker run -d --rm --name myapp_nginx_ssl_reverse_proxy_container -p 443:443 -p 80:80 --network host myapp_nginx_ssl_reverse_proxy_image:latest
       ;;
 
     # myapp_nginx_ssl_reverse_proxy down
